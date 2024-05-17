@@ -1,0 +1,60 @@
+#!/bin/bash
+
+display_menu() {
+   echo
+   echo "=================="
+   echo "Task manager menu:"
+   echo "1. Add task"
+   echo "2. View tasks"
+   echo "3. Mark task as Done"
+   echo "4. Exit"
+}
+view_tasks() {
+  if [ -s tasks.txt ]; then
+       echo "Your tasks:"
+       cat -n tasks.txt
+  else
+       echo "No tasks found."
+  fi
+}
+
+add_task() {
+   echo "Enter task details:"
+   read -p "Task: " task
+   read -p "Day: " day 
+   read -p "Time: " time
+   echo "$task | Day: $day | Time:$time " >> tasks.txt
+   echo "Task added successfully."
+}
+mark_task_done() {
+      view_tasks
+      read -p "Enter the task you completed:" completed_task
+      sed -i "${completed_task}d" tasks.txt
+      echo "Task marked as done!"
+}
+
+#main code..
+
+echo "Organise your life"
+while true; do
+     display_menu
+     read -p "Choose an option (1-4): " choice
+     case $choice in
+     1)
+        add_task
+        ;;
+     2)
+        view_tasks
+        ;;
+     3)
+        mark_task_done
+        ;;
+     4)
+        echo "Exiting Task Manager. Goodbye!"
+        exit 0
+        ;;
+     *)
+        echo "Invalid choice. Please enter a number from 1 to 4."
+        ;;
+     esac
+done
